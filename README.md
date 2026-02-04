@@ -1,231 +1,69 @@
 # Pymart - Python Mini Project
 
-## About This Project
+## Purpose
 
-This is a **mini Python project** developed as part of the **Fundamental of Computing** course during the **1st semester of Academic Year 1** in the **Computer Science** program. 
+Pymart is a **simple online shopping system** created as an educational mini-project for the **Fundamental of Computing** course. It serves as a practical exercise to review and consolidate fundamental programming concepts learned in the 1st semester of Academic Year 1 in Computer Science.
 
-The project serves as a practical exercise to review and consolidate the fundamental programming concepts learned throughout the course, including:
-- Variables and data types
-- Control structures (if-else, loops)
-- Functions and modularity
-- File I/O operations
-- Data structures (dictionaries, lists)
-- JSON format and parsing
-- Basic error handling
-- User input validation
+## Technologies
 
-## Project Description
+- **Language**: Python 3.x
+- **Data Storage**: JSON files (`users.json`, `products.json`)
+- **GUI**: Tkinter (for receipt display)
+- **Encoding**: UTF-8 (Thai language support)
 
-Pymart is a **simple online shopping system** built with Python. It simulates a basic e-commerce platform where users can:
-- Register and login to their accounts
-- Browse product categories
-- Add items to their shopping cart
-- Checkout and generate receipts
-- Choose payment and delivery methods
+## How It Works
 
-## Project Structure
+### Starting Point
+Run `main.py` to start the application. The program begins with **Authentication**:
 
 ```
-Pymart Python MiniProject/
-│
-├── main.py                 # Main program entry point
-├── README.md               # Project documentation
-├── CHANGELOG.md            # Change history
-├── JSON_CONVERSION.md      # JSON conversion documentation
-│
-├── data/                   # Data directory
-│   ├── users.json          # User account data (username, password, email, phone)
-│   └── products.json       # Product catalog (name, price, categories)
-│
-└── src/                    # Source code modules
-    ├── auth.py             # Authentication system (Login, Register, Forgot Password)
-    ├── cart.py             # Shopping cart management
-    ├── receipt.py          # Receipt generation and display
-    └── utils.py            # Helper functions and utilities
+1. Login     → Existing users authenticate
+2. Register  → New users create accounts
+3. Forgot PW → Password recovery via OTP
+4. Exit      → Quit the program
 ```
 
-## File Descriptions
+### Main Workflow
 
-### main.py
-The main entry point of the application. Handles:
-- User authentication flow
-- Shopping loop
-- Checkout process
-- Payment handling
-
-### src/auth.py
-Manages the authentication system:
-- **Login** - User authentication
-- **Register** - New user registration
-- **Forgot Password** - OTP-based password recovery
-- User data loading/saving from/to `data/users.json`
-
-### src/cart.py
-Shopping cart management:
-- `show_cart()` - Display cart contents
-- `add_to_cart()` - Add items to cart
-- `manage_cart()` - Modify item quantities (increase/decrease)
-- `get_cart_total()` - Calculate total amount
-- `clear_cart()` - Empty the cart
-
-### src/receipt.py
-Receipt generation:
-- `show_receipt()` - Display receipt in GUI window (Tkinter)
-- `print_receipt_console()` - Display receipt in console
-
-### src/utils.py
-Utility functions:
-- `load_products()` - Load product data from `data/products.json`
-- `display_categories()` - Display product categories
-- `display_products()` - Display products in a category
-- `calculate_delivery_fee()` - Calculate delivery fee based on location
-- Input validation functions
-
-### data/users.json
-Stores user account information:
-```json
-{
-  "username": {
-    "telephone": "0123456789",
-    "gmail": "user@example.com",
-    "password": "password123"
-  }
-}
+```mermaid
+graph TD
+    A[Start: main.py] --> B[Authentication]
+    B --> C{Login Success?}
+    C -->|Yes| D[Browse Categories]
+    C -->|No| B
+    D --> E[Select Products]
+    E --> F{View Cart? Type 'cv'}
+    F -->|Yes| G[Manage Cart]
+    F -->|No| H{Continue Shopping?}
+    G --> H
+    H -->|Yes| D
+    H -->|No| I[Enter Delivery Location]
+    I --> J[Select Payment Method]
+    J --> K[Generate Receipt]
+    K --> L[Display Receipt GUI + Console]
+    L --> M[End]
 ```
 
-### data/products.json
-Stores product catalog across 18 categories:
-1. Spices (เครื่องเทศ)
-2. Sauce (ซอส)
-3. MRE (อาหารสำเร็จรูป)
-4. Drink (เครื่องดื่ม)
-5. Can (อาหารกระป๋อง)
-6. Meat (เนื้อสัตว์)
-7. FruitNveg (ผักผลไม้)
-8. Toys (ของเล่น)
-9. Kitchen (เครื่องครัว)
-10. Snack (ขนม)
-11. Tools (เครื่องมือ)
-12. Skincare (ผลิตภัณฑ์บำรุงผิว)
-13. Education (อุปกรณ์การศึกษา)
-14. Beauty (เครื่องสำอาง)
-15. Pet (อาหารสัตว์เลี้ยง)
-16. NoodlesCup (บะหมี่กึ่งสำเร็จรูป)
-17. Medical (ยา)
-18. O-TOP (ของพื้นบ้าน)
+### Flow Details
 
-## How to Run
+1. **Authentication** (`src/auth.py`)
+   - User login/register → Validates credentials → Loads/saves user data in `data/users.json`
 
-### For Windows
+2. **Shopping** (`src/utils.py`, `src/cart.py`)
+   - Load products from `data/products.json` (18 categories)
+   - Browse products by category
+   - Add items to cart
+   - Manage cart (increase/decrease quantities)
 
-**Method 1: Using PowerShell (Recommended)**
-```powershell
-$env:PYTHONIOENCODING='utf-8'; python main.py
-```
+3. **Checkout** (`main.py`)
+   - Enter delivery district → Calculate delivery fee
+   - Choose payment method (Mobile Banking or Cash on Delivery)
+   - Calculate total (items + delivery)
 
-**Method 2: Using Command Prompt**
-```cmd
-chcp 65001
-set PYTHONIOENCODING=utf-8
-python main.py
-```
-
-### For macOS/Linux
-
-```bash
-python3 main.py
-```
-
-## User Guide
-
-1. **Select authentication option:**
-   - `1` - Login
-   - `2` - Register
-   - `3` - Forgot Password
-   - `4` - Exit
-
-2. **Browse product categories**
-
-3. **Select products** (you can select multiple items, e.g., `1 3 5`)
-
-4. **Type `cv` to view/modify cart:**
-   - `1m2` - Remove 2 units of item #1
-   - `2p3` - Add 3 units of item #2
-   - `back` - Return to shopping
-
-5. **Type `0` to return to category selection**
-
-6. **Answer `N` when done shopping to proceed to checkout**
-
-7. **Enter your district** (Chonburi province only)
-
-8. **Select payment method:**
-   - `1` - Mobile Banking
-   - `2` - Cash on Delivery
-
-9. **View your receipt** (GUI and console)
-
-## Delivery Fees
-
-- **20 Baht**: Sriracha (ศรีราชา)
-- **40 Baht**: Mueang Chonburi (เมืองชลบุรี), Bang Lamung (บางละมุง), Ko Sichang (เกาะสีชัง)
-- **70 Baht**: Ban Bueng (บ้านบึง), Phan Thong (พานทอง), Phanat Nikhom (พนัสนิคม), Sattahip (สัตหีบ), Nong Yai (หนองใหญ่), Bo Thong (บ่อทอง), Ko Chan (เกาะจันทร์), Bang Pakong (บางปะกง)
-
-## Requirements
-
-- Python 3.x
-- tkinter (for GUI receipt display)
-
-## Technical Features
-
-### Modular Architecture
-- Separated concerns (authentication, cart, receipt, utilities)
-- Easy to debug and maintain
-- Simple to add new features
-
-### Data Persistence
-- JSON-based data storage
-- UTF-8 encoding support for Thai language
-- Secure file operations
-
-### User Interface
-- Console-based interface
-- GUI receipt display using Tkinter
-- Input validation and error handling
-
-### Security Considerations
-- Uses `json.load()` instead of `eval()` (safer)
-- Proper encoding handling for special characters
-- Input validation to prevent errors
-
-## Learning Outcomes
-
-Through this mini project, the following programming concepts were practiced:
-- **Modular programming** - Organizing code into separate modules
-- **File I/O** - Reading and writing JSON files
-- **Data structures** - Using dictionaries and lists effectively
-- **Functions** - Creating reusable function components
-- **Error handling** - Try-except blocks and validation
-- **User interaction** - Input/output in console
-- **GUI basics** - Using Tkinter for simple interfaces
-- **JSON format** - Understanding and working with JSON data
-
-## Future Improvements (Optional)
-
-1. Convert to SQL database for better data management
-2. Add product search functionality
-3. Implement order history tracking
-4. Add discount/coupon system
-5. Create a web-based interface
-6. Add unit tests
-7. Implement logging system
-8. Add inventory management
-
-## Authors
-
-Academic Year 1 - Computer Science
-Fundamental of Computing Course
+4. **Receipt** (`src/receipt.py`)
+   - Generate receipt with order details
+   - Display in GUI window (Tkinter) and console
 
 ---
 
-**Note:** This is an educational project created for learning purposes. It demonstrates fundamental Python programming concepts and is not intended for production use.
+**Note:** This is an educational project for learning Python fundamentals, not for production use.
